@@ -36,8 +36,8 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
-    it { is_expected. to respond_to(:touch_in) }
-    it 'toggles #in_journey? status to true' do
+    it { is_expected.to respond_to(:touch_in) }
+    it 'toggles #in_journey? to true' do
       expect(subject.touch_in).to eq true
     end
   end
@@ -47,6 +47,13 @@ describe Oystercard do
       subject.touch_in
       allow(subject).to receive(:touch_in)
       expect(subject.in_journey).to eq true # ask about '?' in query methods and attr_reader
+    end
+  end
+
+  describe '#touch_out' do
+    it { is_expected.to respond_to(:touch_out) }
+     it 'toggles #in_journey? to false' do
+       expect(subject.touch_out).to eq false
     end
   end
 
