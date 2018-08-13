@@ -20,7 +20,7 @@ describe Oystercard do
       expect(subject.top_up(mockAmount)).to eq(mockAmount)
     end
     it 'raises error if trying to exceed maximum balance' do 
-      expect { subject.top_up(91) }.to raise_error 'ERROR - Exceeds maximum balance'
+      expect { subject.top_up(91) }.to raise_error "ERROR - Exceeds maximum balance of £#{MAXIMUM_BALANCE}"
     end
   end
 
