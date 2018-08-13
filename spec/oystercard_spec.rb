@@ -1,8 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
-  # subject(:oystercard) { Oystercard.new }
-  subject(:oystercard) { described_class.new }
+  subject(:oystercard) { described_class.new }    # subject(:oystercard) { Oystercard.new }
   let(:mockAmount) { double :amount }
  
   describe '#initialize' do
@@ -14,14 +13,16 @@ describe Oystercard do
   describe '#top_up' do 
     it { is_expected.to respond_to(:top_up) }
     it 'enables users to add funds' do 
-      # number = 10 
-      # expect(subject.top_up(10)).to eq 10
-      allow(subject).to receive(:top_up).and_return(mockAmount)
-      expect(subject.top_up(mockAmount)).to eq(mockAmount)
+      allow(subject).to receive(:top_up).and_return(mockAmount)  # number = 10 
+      expect(subject.top_up(mockAmount)).to eq(mockAmount)       # expect(subject.top_up(10)).to eq 10
     end
     it 'raises error if trying to exceed maximum balance' do 
-      expect { subject.top_up(91) }.to raise_error "ERROR - Exceeds maximum balance of £#{MAXIMUM_BALANCE}"
+      expect { subject.top_up(Oystercard::MAXIMUM_BALANCE) }.to raise_error "ERROR - Exceeds maximum balance of £#{Oystercard::MAXIMUM_BALANCE}"
     end
+  end
+
+  describe '#deduct' do 
+
   end
 
   

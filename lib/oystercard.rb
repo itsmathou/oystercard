@@ -1,6 +1,6 @@
 class Oystercard
 
-attr_reader :balance
+attr_reader :balance, :MAXIMUM_BALANCE
 
 MAXIMUM_BALANCE = 90
 
