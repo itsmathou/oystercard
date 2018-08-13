@@ -26,9 +26,6 @@ describe Oystercard do
   describe '#deduct' do
     it { is_expected.to respond_to(:deduct) }
     it 'deducts fare from balance' do
-      # subject.top_up(25)
-      # testFare = 2
-      # expect(subject.deduct(testFare)).to eq 23
       allow(subject).to receive(:top_up).and_return(mockAmount)    # subject.top_up(25)
       allow(subject).to receive(:deduct).and_return(mockBalance)   # testFare = 2
       expect(subject.deduct(mockFare)).to eq(mockBalance)          # expect(subject.deduct(testFare)).to eq 23
