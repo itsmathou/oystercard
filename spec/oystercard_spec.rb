@@ -42,5 +42,13 @@ describe Oystercard do
     end
   end
 
+  describe '#in_journey?' do
+    it 'reads statuts of card' do
+      subject.touch_in
+      allow(subject).to receive(:touch_in)
+      expect(subject.in_journey).to eq true # ask about '?' in query methods and attr_reader
+    end
+  end
+
 
 end
