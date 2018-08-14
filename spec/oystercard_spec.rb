@@ -4,6 +4,7 @@ describe Oystercard do
   subject(:oystercard) { described_class.new }    # subject(:oystercard) { Oystercard.new }
   let(:mockAmount) { double :amount }
   let(:mockOystercard) { double :subject }
+  let(:station) { double :station }
 
   describe '#initialize' do
     it 'defaults with a balance of £0' do
@@ -26,11 +27,17 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_in) }
     it 'toggles #in_journey? to true' do
       allow(subject).to receive(:touch_in).and_return true
-      expect(subject.touch_in).to eq true
+      expect(subject.touch_in(station)).to eq true
     end
 
     it 'raises error if balance below 0' do
-      expect { subject.touch_in }.to raise_error "ERROR - No fund please top up!"
+      expect { subject.touch_in(station) }.to raise_error "ERROR - No fund please top up!"
+    end
+
+    it 'remembers station touched in' do
+      subject.top_up(10)
+      # entry_station = subject.entry_station
+      expect(subject.touch_in(station)).to eq station
     end
   end
 
@@ -49,9 +56,13 @@ describe Oystercard do
 
     it "deducts the correct amount from my card" do
       subject.top_up(10)
-      subject.touch_in
+      subject.touch_in(station)
       expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MINIMUM_CHARGE)
     end
+  end
+
+  describe '#entry_station' do
+      it { is_expected.to respond_to(:entry_station) }
   end
 
 
