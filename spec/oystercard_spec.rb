@@ -2,9 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }    # subject(:oystercard) { Oystercard.new }
-  let(:mockBalance) { double :balance }
   let(:mockAmount) { double :amount }
-  let(:mockFare) { double :fare }
   let(:mockOystercard) { double :subject }
 
   describe '#initialize' do
@@ -24,15 +22,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it { is_expected.to respond_to(:deduct) }
-    it 'deducts fare from balance' do
-      allow(subject).to receive(:top_up).and_return(mockAmount)    # subject.top_up(25)
-      allow(subject).to receive(:deduct).and_return(mockBalance)   # testFare = 2
-      expect(subject.deduct(mockFare)).to eq(mockBalance)          # expect(subject.deduct(testFare)).to eq 23
-    end
-  end
-
   describe '#touch_in' do
     it { is_expected.to respond_to(:touch_in) }
     it 'toggles #in_journey? to true' do
@@ -47,7 +36,6 @@ describe Oystercard do
 
   describe '#in_journey?' do
     it 'reads statuts of card' do
-      # mockOystercard.touch_in
       allow(mockOystercard).to receive(:in_journey).and_return true
       expect(mockOystercard.in_journey).to eq true
     end
@@ -57,6 +45,12 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_out) }
      it 'toggles #in_journey? to false' do
        expect(subject.touch_out).to eq false
+    end
+
+    it "deducts the correct amount from my card" do
+      subject.top_up(10)
+      subject.touch_in
+      expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MINIMUM_CHARGE)
     end
   end
 
