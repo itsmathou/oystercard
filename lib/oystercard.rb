@@ -24,8 +24,8 @@ MINIMUM_CHARGE = 1
 
   def touch_out
     deduct(MINIMUM_CHARGE)
-    @in_journey = false
     @entry_station = nil
+    @in_journey = false
   end
 
   private
