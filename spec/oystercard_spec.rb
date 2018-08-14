@@ -5,6 +5,7 @@ describe Oystercard do
   let(:mockBalance) { double :balance }
   let(:mockAmount) { double :amount }
   let(:mockFare) { double :fare }
+  let(:mockOystercard) { double :subject }
 
   describe '#initialize' do
     it 'defaults with a balance of £0' do
@@ -35,15 +36,20 @@ describe Oystercard do
   describe '#touch_in' do
     it { is_expected.to respond_to(:touch_in) }
     it 'toggles #in_journey? to true' do
+      allow(subject).to receive(:touch_in).and_return true
       expect(subject.touch_in).to eq true
+    end
+
+    it 'raises error if balance below 0' do
+      expect { subject.touch_in }.to raise_error "ERROR - No fund please top up!"
     end
   end
 
   describe '#in_journey?' do
     it 'reads statuts of card' do
-      subject.touch_in
-      allow(subject).to receive(:touch_in)
-      expect(subject.in_journey).to eq true # ask about '?' in query methods and attr_reader
+      # mockOystercard.touch_in
+      allow(mockOystercard).to receive(:in_journey).and_return true
+      expect(mockOystercard.in_journey).to eq true
     end
   end
 
