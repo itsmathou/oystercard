@@ -5,7 +5,9 @@ describe Oystercard do
   let(:mockAmount) { double :amount }
   let(:mockOystercard) { double :subject }
   let(:station) { double :station }
+  let(:entry_station) { double :entry_station }
   let(:exit_station) { double :exit_station }
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
 
   describe '#initialize' do
     it 'defaults with a balance of £0' do
@@ -35,11 +37,10 @@ describe Oystercard do
       expect { subject.touch_in(station) }.to raise_error "ERROR - No fund please top up!"
     end
 
-    it 'remembers station touched in' do
-      subject.top_up(10)
-      # entry_station = subject.entry_station
-      expect(subject.touch_in(station)).to eq station
-    end
+    # it 'remembers station touched in' do
+    #   subject.top_up(10)
+    #   expect(subject.touch_in(station)).to eq station
+    # end
   end
 
   describe '#in_journey?' do
@@ -56,16 +57,29 @@ describe Oystercard do
        expect(subject.touch_out(exit_station)).to eq false
     end
 
-    it "deducts the correct amount from my card" do
+    before(:each) do
       subject.top_up(10)
-      subject.touch_in(station)
+    end
+
+    it "deducts the correct amount from my card" do
+      subject.touch_in(entry_station)
       expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-Oystercard::MINIMUM_CHARGE)
     end
 
-    it 'remembers station touched out' do
-      subject.top_up(10)
-      subject.touch_in(station)
-      expect(subject.touch_out(exit_station)).to eq exit_station
+    # it 'stores exit station' do
+    #   subject.touch_in(entry_station)
+    #   subject.touch_out(exit_station)
+    #   expect(subject.touch_out(exit_station)).to eq exit_station
+    # end
+
+    it 'has an empty list of journeys by default' do
+      expect(subject.journeys).to be_empty
+    end
+
+    it 'stores a journey' do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys).to include journey
     end
   end
 
